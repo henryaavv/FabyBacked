@@ -1,0 +1,74 @@
+{%load static%}
+
+<div class="site-header">
+
+    <p class="h-logo">
+        <a href="/"><img src="{% static 'img/logo-fabystar.png' %}" alt="MultiShop"></a>
+    </p><!--
+No Space
+--><div class="h-shop">
+
+    <form method="post" class="h-search" id="h-search">
+             {% csrf_token%}
+   
+        <input type="text" name="produc_nombre" placeholder="Buscar...">
+        <button type="submit"><i class="ion-search"></i></button>
+    </form>
+
+    <ul class="h-shop-links">
+        <li class="h-search-btn" id="h-search-btn"><i class="ion-search"></i></li>
+      
+        <li class="h-shop-icon h-profile">
+            <a href="{% url 'web:cuenta' %}" title="My cuenta">
+                <i class="ion-android-person"></i>
+            </a>
+            <ul class="h-profile-links">
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'web:usuariologout' %}">Salir</a></li>
+                {% else %}
+                <li><a href="{% url 'web:usuariologin' %}">Ingresar / Registrarse</a></li>
+                {% endif %}
+                <li><a href="{% url 'web:carrito' %}">Carrito de compras</a></li>
+               
+            </ul>
+        </li>
+
+        <li class="h-cart">
+            <a class="cart-contents" href="{% url 'web:carrito' %}">
+                <p class="h-cart-icon">
+                    <i class="ion-android-cart"></i>
+                    
+                </p>
+                <p class="h-cart-total"></p>
+            </a>
+            <div class="widget_shopping_cart">
+                <div class="widget_shopping_cart_content">
+                    <ul class="cart_list">
+                        {% for key, value in request.session.cart.items %}
+                        
+                        <li>
+                            <a href="{% url 'web:carritodel' value.producto_id%}" class="remove">&times;</a>
+                            <a href="/">
+                                <img src="{{value.imagen}}" alt="">
+                                {{value.nombre}}
+                            </a>
+                            <span class="quantity">{{value.cantidad}} &times; ${{value.precio}}</span>
+                        </li>
+                        {% endfor %}
+                       
+                    </ul>
+                    <p class="total"><b>Subtotal:</b>${{request.session.total}}</p>
+                    <p class="buttons">
+                        <a href="{% url 'web:carrito' %}" class="button">Ir a carrito</a>
+                        <a href="{% url 'web:pedido'%}" class="button">Pagar</a>
+                    </p>
+                </div>
+            </div>
+        </li>
+
+        <li class="h-menu-btn" id="h-menu-btn">
+            <i class="ion-navicon"></i> Menu
+        </li>
+    </ul>
+</div>
+</div>

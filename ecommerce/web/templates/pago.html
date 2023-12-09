@@ -1,0 +1,69 @@
+{% extends 'layout.html' %} {% block content %}
+<div class="cont maincont">
+    <h1 class="maincont-ttl">PEDIDO NRO: {{pedido.id}}</h1>
+    <article class="page-cont">
+        <div class="page-styling">
+            <div class="auth-wrap">
+                <div class="auth-col">
+                    <h2>Datos de Pedido</h2>
+                    <p>Nro Pedido: {{pedido.nro_pedido}}</p>
+                    <p>
+                        Cliente: {{pedido.cliente.usuario.first_name}}
+                        {{pedido.cliente.usuario.last_name}}
+                    </p>
+                </div>
+
+                <div class="auth-col">
+                    <h2>Proceder con el pago</h2>
+                    <p>Monto total a pagar: {{pedido.monto_total}}</p>
+                    {{paypal_form.render}}
+                </div>
+            </div>
+        </div>
+
+    <div class="page-styling">
+        <div class="woocommerce prod-litems section-list">
+            {% for detalle in pedido.pedidodetalle_set.all %}
+            <article class="prod-li sectls">
+                <div class="prod-li-inner">
+                    <a href="product.html" class="prod-li-img">
+                        <img src="{{detalle.producto.produc_imagen.url}}" alt="" />
+                    </a>
+                    <div class="prod-li-cont">
+                        <div class="prod-li-ttl-wrap">
+                            <p>
+                                <a href="#">{{detalle.producto.categoria}}</a>
+                            </p>
+                            <h3><a href="product.html">{{detalle.producto.produc_nombre}}</a></h3>
+                        </div>
+              <!--
+            No Space
+            -->
+              <div class="prod-li-prices">
+                        <div class="prod-li-price-wrap">
+                            <p>Price</p>
+                            <p class="prod-li-price">{{detalle.precio}}</p>
+                        </div>
+                        <div class="prod-li-qnt-wrap">
+                            <p class="qnt-wrap prod-li-qnt">
+                                <a href="#" class="qnt-plus prod-li-plus"><i class="icon ion-arrow-up-b"></i></a>
+                                <input type="text" value="{{detalle.cantidad}}" />
+                                <a href="#" class="qnt-minus prod-li-minus"><i class="icon ion-arrow-down-b"></i></a>
+                            </p>
+                        </div>
+                        <div  class="prod-li-total-wrap">
+                            <p>Total</p>
+                            <p class="prod-li-total">{{detalle.subtotal}}</p>
+                        </div>
+              </div>
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+    </article>
+</div>
+{% endblock %}
+
+
